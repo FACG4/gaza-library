@@ -1,11 +1,14 @@
 import express from 'express';
 import home from './home';
-import login from './login';
+import { getLogin, postLogin } from './login';
+import logout from './logout';
 
 const router = express.Router();
 
 router
   .get('/', home)
-  .get('/admin/login', login);
+  .get('/admin/login', getLogin)
+  .post('/admin/login', postLogin)
+  .get('/admin/logout', logout);
 
 export default router;
