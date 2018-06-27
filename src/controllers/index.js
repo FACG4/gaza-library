@@ -9,18 +9,26 @@ import validLogin from './valid_login';
 import adminEvents from './admin_events';
 import adminCourses from './admin_courses';
 import adminRoom from './admin_room';
+import authintication from './authintication';
+import adminHome from './admin_home';
+
 
 const router = express.Router();
 
 router
   .get('/', home)
-  .get('/admin/login', getLogin)
-  .post('/admin/login', validLogin, postLogin)
-  .get('/admin/logout', logout)
   .get('/events', events)
+  .get('/courses', events)
+  .get('/eventdetails/:id', checkId, eventDetails)
+  .use('/admin', authintication)
+  .get('/admin/login', getLogin)
+  .get('/admin/logout', logout)
+  .post('/admin/login', validLogin, postLogin)
   .get('/admin/events', adminEvents)
   .get('/admin/courses', adminCourses)
   .get('/courses', events)
   .get('/eventdetails/:id', checkId, eventDetails)
-  .get('/admin/room/:id', adminRoom);
+  .get('/admin/room/:id', adminRoom)
+  .get('/admin/home', adminHome);
+
 export default router;

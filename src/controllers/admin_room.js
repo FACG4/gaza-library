@@ -1,7 +1,7 @@
 import models from '../database/models';
 
-export default (req, res) => {
-  const roomId = req.params.id;
+export default (req, res, next) => {
+  const { params: { id: roomId } } = req;
   let roomName = '';
   models.Rooms.findOne({ where: { id: roomId } }).then((roomInfo) => {
     roomName = roomInfo.room_name;
@@ -23,6 +23,8 @@ export default (req, res) => {
         roomName,
         jsFile: ['admin'],
       });
+    }).catch((e) => {
+      next(e);
     });
   });
 };
