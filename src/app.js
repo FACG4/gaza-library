@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import exhbs from 'express-handlebars';
 import path from 'path';
 import favicon from 'serve-favicon';
+import cookieParser from 'cookie-parser';
 import controllers from './controllers';
 import clientsApi from './controllers/api/clients';
 import helpers from './views/helpers/index';
@@ -30,6 +31,7 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 
+app.use(cookieParser());
 app.use(controllers);
 app.use('/api/v1', clientsApi)
 
@@ -39,7 +41,6 @@ app.use((req, res) => {
     errorMessage: 'Page Not Found',
   });
 });
-
 
 app.use((err, req, res, next) => {
   if (err.isJoi) {
