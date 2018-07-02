@@ -18,6 +18,8 @@ const swalLoad = () => {
       } else {
         window.location = document.referrer
       }
+    }).catch((error)=> {
+      swal('خطأ', 'حدث خطأ ما يرجى المحاولة فيما بعد', 'error');
     })
 }
 

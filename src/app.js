@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import exhbs from 'express-handlebars';
 import path from 'path';
 import favicon from 'serve-favicon';
-import { controler, adminControler } from './controllers';
+import controllers from './controllers';
 import clientsApi from './controllers/api/clients';
 import helpers from './views/helpers/index';
 import cookieParser from 'cookie-parser';
@@ -30,8 +30,7 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 
-app.use(controler);
-app.use('/admin', adminControler);
+app.use(controllers);
 app.use('/api/v1', clientsApi)
 
 app.use((req, res) => {
@@ -46,7 +45,6 @@ app.use((err, req, res, next) => {
   if (err.isJoi) {
     res.status(401).send('Unauthorized');
   } else {
-    console.error('505 server error', err);
     res.status(500).render('error', {
       statusCode: 500,
       errorMessage: 'Internal server error',

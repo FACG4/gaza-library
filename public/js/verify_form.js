@@ -22,7 +22,9 @@ const createForm = (room_name, start_at, end_at, referrer) => {
 
 const trimTime = (time) => {
   time = new Date(time);
-  return (time.getUTCHours()<10 ? ('0'+time.getUTCHours()):time.getUTCHours())+':'+ (time.getMinutes()<10 ? ('0'+time.getMinutes()):time.getMinutes());
+  const hour = time.getUTCHours();
+  const minutes = time.getMinutes();
+  return (hour<10 ? ('0'+hour):hour)+':'+ (minutes<10 ? ('0'+minutes) : minutes);
 }
 
 const verifyStart = (start, end, resource, referrer) => {
@@ -110,7 +112,9 @@ const verifyStart = (start, end, resource, referrer) => {
             } else {
               swal('error', res.msg, 'error')
             }
-          });
+          }).catch((error) => {
+            swal('خطأ', 'حدث خطأ ما يرجى المحاولة فيما بعد', 'error');
+          })
     }
   });
 };
@@ -172,7 +176,7 @@ const verifyCode = (response, start, end, resource, referrer) => {
       }
     }
     }).then((value) => {
-        if (value === '') {
+        if (!value) {
           swal('خطأ', 'الرجاء ادخال كود التفعيل', 'error')
           .then(res =>{
             if(resource){
@@ -230,7 +234,9 @@ const verifyCode = (response, start, end, resource, referrer) => {
                     window.location.reload();
                   });
                 }
-              });
+              }).catch((error) => {
+                swal('خطأ', 'حدث خطأ ما يرجى المحاولة فيما بعد', 'error');
+              })
         } else {
           clearInterval(timer);
           swal.close();

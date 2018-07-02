@@ -45,23 +45,26 @@ export const postBookings = (req, res) => {
           where: { phone },
           defaults: { name, email }
         }).then((clientRes) => {
-          const clientInfo = clientRes[0].dataValues
-        models.ExtBookings.create({
-          client_id: clientInfo.id,
-          booking_id: bookingRes.dataValues.id,
-          event_title
-        }).then((extBookingRes) => {
-          res.json({ success: true, msg: 'تم حجز القاعة بنجاح، سيتم الاتصال بك لاحقا' })
+          if (clientRes[0]) {
+            const clientInfo = clientRes[0].dataValues
+            models.ExtBookings.create({
+              client_id: clientInfo.id,
+              booking_id: bookingRes.dataValues.id,
+              event_title
+            }).then((extBookingRes) => {
+              res.json({ success: true, msg: 'تم حجز القاعة بنجاح، سيتم الاتصال بك لاحقا' })
+            }).catch((error) => {
+              res.json({ err: 'Something went wrong try again' })
+            });
+          } else {
+            res.json({ err: 'Something went wrong try again' })
+          }
         }).catch((error) => {
           res.json({ err: 'Something went wrong try again' })
         });
       }).catch((error) => {
         res.json({ err: 'Something went wrong try again' })
       });
-    }).catch((error) => {
-      res.json({ err: 'Something went wrong try again' })
-    });
-  }
-
+    }
   });
 };

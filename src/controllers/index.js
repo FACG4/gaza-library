@@ -11,9 +11,9 @@ import validLogin from './valid_login';
 import adminEvents from './admin_events';
 import adminCourses from './admin_courses';
 
-const controler = express.Router();
+const router = express.Router();
 
-controler
+router
   .get('/', home)
   .get('/events', events)
   .get('/admin/login', getLogin)
@@ -21,13 +21,11 @@ controler
   .get('/bookings', bookings)
   .post('/phone/verification/start', phoneVerifyStart)
   .get('/eventdetails/:id', checkId, eventDetails)
-  
-const adminControler = new express.Router();
 
-adminControler
-  .post('/login', validLogin, postLogin)
-  .get('/logout', logout)
-  .get('/events', adminEvents)
-  .get('/courses', adminCourses)
+  // some authintication middleware goes here
+  .post('/admin/login', validLogin, postLogin)
+  .get('/admin/logout', logout)
+  .get('/admin/events', adminEvents)
+  .get('/admin/courses', adminCourses)
 
-export { controler, adminControler };
+export default router;
