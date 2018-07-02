@@ -5,12 +5,15 @@ import path from 'path';
 import favicon from 'serve-favicon';
 import cookieParser from 'cookie-parser';
 import controllers from './controllers';
+import clientsApi from './controllers/api/clients';
 import helpers from './views/helpers/index';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -26,27 +29,24 @@ app.engine(
 );
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, '..', 'public')));
-
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 
 app.use(cookieParser());
 app.use(controllers);
+app.use('/api/v1', clientsApi)
 
 app.use((req, res) => {
   res.status(404).render('error', {
-    cssFile: 'style',
     statusCode: 404,
     errorMessage: 'Page Not Found',
   });
 });
-
 
 app.use((err, req, res, next) => {
   if (err.isJoi) {
     res.status(401).send('Unauthorized');
   } else {
     res.status(500).render('error', {
-      cssFile: 'style',
       statusCode: 500,
       errorMessage: 'Internal server error',
     });
