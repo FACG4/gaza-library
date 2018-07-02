@@ -4,6 +4,7 @@ import exhbs from 'express-handlebars';
 import path from 'path';
 import favicon from 'serve-favicon';
 import fileUpload from 'express-fileupload';
+import cookieParser from 'cookie-parser';
 import controllers from './controllers';
 import helpers from './views/helpers';
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 
+app.use(cookieParser());
 app.use(controllers);
 
 app.use((req, res) => {
