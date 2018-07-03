@@ -3,9 +3,10 @@ import bodyParser from 'body-parser';
 import exhbs from 'express-handlebars';
 import path from 'path';
 import favicon from 'serve-favicon';
+import fileUpload from 'express-fileupload';
 import cookieParser from 'cookie-parser';
 import controllers from './controllers';
-import helpers from './views/helpers/index';
+import helpers from './views/helpers';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.engine(
     helpers,
   }),
 );
+app.use(fileUpload());
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, '..', 'public')));
 

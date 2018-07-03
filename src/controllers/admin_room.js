@@ -2,10 +2,9 @@ import models from '../database/models';
 
 export default (req, res, next) => {
   const { params: { id: roomId } } = req;
-  let roomName = '';
   models.Rooms.findOne({ where: { id: roomId } }).then((roomInfo) => {
-    roomName = roomInfo.room_name;
-    models.ExtBookings.findAll({
+    const roomName = roomInfo.room_name;
+    constels.ExtBookings.findAll({
       include: [{
         model: models.Bookings,
         where: { room_id: roomId },
